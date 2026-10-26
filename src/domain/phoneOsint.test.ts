@@ -91,13 +91,21 @@ describe("selection workflows", () => {
     const none = unselectAllTools(all);
     expect(none.selectedToolIds).toEqual([]);
 
-    const category = selectCategoryTools("phone-osint", none, PHONE_OSINT_CATALOG);
+    const category = selectCategoryTools(
+      "phone-osint",
+      none,
+      PHONE_OSINT_CATALOG,
+    );
     expect(category.selectedToolIds).toHaveLength(10);
   });
 
   it("toggles individual tools in stable catalog order", () => {
     const state = createSelectionState([]);
-    const one = toggleToolSelection("whatsapp-context", state, PHONE_OSINT_CATALOG);
+    const one = toggleToolSelection(
+      "whatsapp-context",
+      state,
+      PHONE_OSINT_CATALOG,
+    );
     const two = toggleToolSelection(
       "exact-phone-search",
       one,
@@ -112,7 +120,10 @@ describe("selection workflows", () => {
 
 describe("open and copy workflows", () => {
   it("uses sequential mode for mobile-safe launch behavior", () => {
-    const state = createSelectionState(["exact-phone-search", "business-context"]);
+    const state = createSelectionState([
+      "exact-phone-search",
+      "business-context",
+    ]);
     const plan = createOpenSelectedPlan(
       normalized("+12025550175"),
       state,
@@ -139,7 +150,9 @@ describe("open and copy workflows", () => {
 
     const payload = copyUrlsPayload(categoryPlan);
     expect(payload.split("\n")).toHaveLength(10);
-    expect(payload).toContain("https://www.google.com/maps/search/%2B12025550175");
+    expect(payload).toContain(
+      "https://www.google.com/maps/search/%2B12025550175",
+    );
   });
 });
 
@@ -161,7 +174,7 @@ describe("notes and privacy-preserving audit hooks", () => {
       action: "open_selected",
       selectedToolCount: 2,
       sensitiveToolCount: 2,
-      notesLength: 48,
+      notesLength: state.notes.length,
       phoneFingerprint: {
         digitCount: 11,
         last4: "0175",
